@@ -1,0 +1,22 @@
+name: Run a FastMCP Agent
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  run_fastmcp_agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run FastMCP Agent
+        uses: ./
+        with:
+          agent: "github-triage"
+          arguments: '{"investigate_issue_number": "{{ github.event.issue.number }}", "investigate_issue_repo": "{{ github.event.issue.repository.name }}", "investigate_issue_owner": "{{ github.event.issue.repository.owner.name }}"}'
