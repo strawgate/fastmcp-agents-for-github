@@ -1,0 +1,17 @@
+{
+  "mcpServers":
+    {
+      "agents":
+        {
+          "command": "uvx",
+          "args":
+            [
+              "--with",
+              "pydantic-ai@git+https://github.com/strawgate/pydantic-ai@dynamic-toolset",
+              "--from",
+              "fastmcp-agents-library-agents",
+              "github-triage",
+            ],
+        },
+    },
+}

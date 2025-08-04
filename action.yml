@@ -2,13 +2,16 @@
 name: 'Run a FastMCP Agent'
 description: 'A GitHub Action that runs a FastMCP Agent'
 inputs:
-  library:
+  package:
     description: 'Enter the name of the pypi package containing the agent'
-    required: true
+    required: false
     default: "fastmcp-agents-library-agents"
+  server_script:
+    description: 'Enter pyproject.toml script for starting the FastMCP Agents server'
+    required: true
   agent:
     description: 'Enter the agent name'
-    required: false
+    required: true
   arguments:
     description: 'Enter the agent arguments'
     required: true
@@ -27,9 +30,9 @@ runs:
     - name: "Create Configuration File"
       shell: bash
       run: |
-        echo "{mcpServers": {"agents": {"command": "uvx", "args": ["--from", "{{ inputs.library }}", "{{ inputs.agent }}"]}}} > .github/mcp/fastmcp-agent.yml
+        echo '{"mcpServers": {"agents": {"command": "uvx", "args": ["--with", "pydantic-ai@git+https://github.com/strawgate/pydantic-ai@dynamic-toolset","--from", "${{ inputs.package }}", "${{ inputs.server_script }}"]}}}' > "${{runner.temp}}/fastmcp-agent.json"
  
     - name: "Run the agent"
       shell: bash
       run: |
-        uvx fastmcp-agents-cli call tool --config .github/mcp/fastmcp-agent.yml {{ inputs.agent }} "{{ inputs.arguments }}"
+        uvx fastmcp-agents-cli call tool --config "${{runner.temp}}/fastmcp-agent.json" --tool ${{ inputs.agent }} --args '${{ inputs.arguments }}'
