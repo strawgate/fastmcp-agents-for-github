@@ -30,7 +30,7 @@ runs:
     - name: "Create Configuration File"
       shell: bash
       run: |
-        echo '{"mcpServers": {"agents": {"command": "uvx", "args": ["--with", "pydantic-ai@git+https://github.com/strawgate/pydantic-ai@dynamic-toolset","--from", "${{ inputs.package }}", "${{ inputs.server_script }}"]}}}' > "${{runner.temp}}/fastmcp-agent.json"
+        echo '{"mcpServers": {"agents": {"command": "uvx", "args": ["--with", "fastmcp-agents@git+https://github.com/strawgate/fastmcp-agents@pydantic-fork","--with", "pydantic-ai@git+https://github.com/strawgate/pydantic-ai@dynamic-toolset","--from", "${{ inputs.package }}", "${{ inputs.server_script }}"]}}}' > "${{runner.temp}}/fastmcp-agent.json"
  
     - name: "Run the agent"
       shell: bash
