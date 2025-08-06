@@ -1,0 +1,32 @@
+name: FastMCP Agents on Dev Ask in issue comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  run_fastmcp_agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    if: 
+      ${{ !contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/agent') }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run FastMCP Agent
+        uses: ./
+        env:
+          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODEL: "google-gla:gemini-2.5-flash"
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        with:
+          package: "fastmcp-agents-library-agents"
+          server_script: "github-triage"
+          agent: "research_github_issue"
+          arguments: '{"instructions": "A developer in the thread has tagged you specifically. Review the existing conversation in its entirety (including your previous interactions) and respond to the question to the best of your ability.", "investigate_issue_number": ${{ github.event.issue.number }}, "investigate_issue_repo": "${{ github.event.repository.name }}", "investigate_issue_owner": "${{ github.repository_owner }}", "reply_to_issue_number": ${{ github.event.issue.number }}, "reply_to_issue_repo": "${{ github.event.repository.name }}", "reply_to_issue_owner": "${{ github.repository_owner }}"}'

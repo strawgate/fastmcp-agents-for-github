@@ -26,4 +26,4 @@ jobs:
           package: "fastmcp-agents-library-agents"
           server_script: "github-triage"
           agent: "research_github_issue"
-          arguments: '{"investigate_issue_number": ${{ github.event.issue.number }}, "investigate_issue_repo": "${{ github.event.repository.name }}", "investigate_issue_owner": "${{ github.repository_owner }}", "reply_to_issue_number": ${{ github.event.issue.number }}, "reply_to_issue_repo": "${{ github.event.repository.name }}", "reply_to_issue_owner": "${{ github.repository_owner }}"}'
+          arguments: '{"instructions": "When possible, propose the details of a full solution to the reported problem.", "investigate_issue_number": ${{ github.event.issue.number }}, "investigate_issue_repo": "${{ github.event.repository.name }}", "investigate_issue_owner": "${{ github.repository_owner }}", "reply_to_issue_number": ${{ github.event.issue.number }}, "reply_to_issue_repo": "${{ github.event.repository.name }}", "reply_to_issue_owner": "${{ github.repository_owner }}"}'
